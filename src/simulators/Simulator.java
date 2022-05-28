@@ -52,24 +52,25 @@ abstract public class Simulator {
         if (currentDir == null)
             return false;
 
+        Directory oldTarget = currentDir.getDirectory(folderName);
         Directory target = currentDir.getDirectory(folderName);
 
         if (target == null)
             return false;
 
-        for (File f :
-                target.getFiles()) {
-            if (!deleteFile(path + '/' + f.getName()))
+        List<File> files = target.getFiles();
+        for (int i = 0; i < files.size(); i++) {
+            if (!deleteFile(path + '/' + files.get(i).getName()))
                 return false;
         }
 
-        for (Directory d :
-                target.getDirectories()) {
-            if (!deleteFolder(path + '/' + d.getName()))
+        List<Directory> directories = target.getDirectories();
+        for (int i = 0; i < directories.size(); i++) {
+            if (!deleteFolder(path + '/' + directories.get(i).getName()))
                 return false;
         }
 
-        currentDir.removeDirectory(target);
+        currentDir.removeDirectory(oldTarget);
 
         return true;
     }
